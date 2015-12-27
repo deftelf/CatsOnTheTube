@@ -18,8 +18,14 @@ public class Cat extends SentientThing {
         moveToRandom(getStation().getConnectedTo());
     }
 
-    public void shave() {
-        isShaved = true;
+    public void shave(int movementCount) {
+        if (!isShaved) {
+            isShaved = true;
+            if (Main.verbose) {
+                System.out.print("Movement " + movementCount + " - ");
+            }
+            System.out.println("Cat " + id + " " + name + " was shaved.");
+        }
     }
 
     public boolean isShaved() {

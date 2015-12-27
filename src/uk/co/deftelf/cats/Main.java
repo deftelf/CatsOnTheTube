@@ -82,9 +82,28 @@ public class Main {
                 if (verbose) {
                     System.out.print("Movement " + movementCount + " - ");
                 }
-                System.out.println("Owner " + owner.id + " " + owner.name + " found cat " + cat.id + " " + cat.name + " - " + owner.getStation().getName() + " is now closed.");
+                System.out.print("Owner " + owner.id + " " + owner.name + " found cat " + cat.id + " " + cat.name + " - " + owner.getStation().getName() + " is now closed.");
+                if (cat.isShaved()) {
+                    System.out.print(" Cat was shaved!");
+                }
+                System.out.println();
                 turnsToFind.add(movementCount);
                 owner.getStation().close();
+            }
+
+            if (shaveMode) {
+                // We've removed matches, so any cats in a station with any owners are not their own
+                // and are up for a de-fur
+                HashSet<Station> ownerOccuped = new HashSet<>(owners.size());
+                for (Owner owner : owners) {
+                    ownerOccuped.add(owner.getStation());
+                }
+                for (Cat cat : cats) {
+                    if (ownerOccuped.contains(cat.getStation())) {
+                        // OH DEAR
+                        cat.shave(movementCount);
+                    }
+                }
             }
 
             if (movementCount < ITERATIONS && cats.size() > 0) {

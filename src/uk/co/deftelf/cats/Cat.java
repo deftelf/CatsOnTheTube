@@ -8,6 +8,7 @@ import java.util.List;
 public class Cat extends SentientThing {
 
     private boolean isShaved;
+    private boolean isStuck;
 
     public Cat(int id, String name) {
         super(id, name);
@@ -15,7 +16,15 @@ public class Cat extends SentientThing {
 
     @Override
     public void move() {
-        moveToRandom(getStation().getConnectedTo());
+        if (Main.mindTheGapMode && !isStuck) {
+            if (Main.random.nextInt(50) == 0) {
+                isStuck = true;
+                System.out.println("Cat " + id + " " + name + " fell down the gap and is stuck!");
+            }
+        }
+        if (!isStuck) {
+            moveToRandom(getStation().getConnectedTo());
+        }
     }
 
     public void shave(int movementCount) {

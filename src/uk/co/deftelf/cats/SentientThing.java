@@ -3,6 +3,7 @@ package uk.co.deftelf.cats;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by carl on 25/12/15.
@@ -34,11 +35,18 @@ public abstract class SentientThing { // I had to look up whether cats were sent
         return station;
     }
 
-    protected void moveToRandom(List<Station> connectedTo) {
+    protected void moveToRandom(Set<Station> connectedTo) {
         if (connectedTo.size() > 0) {
+            // Slightly awkward pick random item iterator. Sets have no int index, so you have to step through them
             int index = Main.random.nextInt(connectedTo.size());
-            Station station = connectedTo.get(index);
-            setStation(station);
+            int i = 0;
+            for (Station station : connectedTo) {
+                if (i == index) {
+                    setStation(station);
+                    break;
+                }
+                i++;
+            }
         }
     }
 }

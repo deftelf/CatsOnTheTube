@@ -1,7 +1,9 @@
 package uk.co.deftelf.cats;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class Main {
@@ -26,11 +28,15 @@ public class Main {
         }
 
         turnsToFind = new ArrayList<>();
-        loadStations();
-        loadCats();
-        loadOwners();
-        assignStartingPositions();
-        run();
+        try {
+            loadStations();
+            loadCats();
+            loadOwners();
+            assignStartingPositions();
+            run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -99,8 +105,7 @@ public class Main {
                     ownerOccuped.add(owner.getStation());
                 }
                 for (Cat cat : cats) {
-                    if (ownerOccuped.contains(cat.getStation())) {
-                        // OH DEAR
+                    if (ownerOccuped.contains(cat.getStation())) { // OH DEAR
                         cat.shave(movementCount);
                     }
                 }
@@ -139,15 +144,13 @@ public class Main {
         }
     }
 
-    private static void loadCats() {
+    static void loadCats() throws IOException {
         ArrayList<String> catNames = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("cats.dat"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 catNames.add(line);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         cats = new ArrayList<>(catsStarting);
@@ -157,15 +160,13 @@ public class Main {
         }
     }
 
-    private static void loadOwners() {
+    static void loadOwners() throws IOException {
         ArrayList<String> humanNames = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("humans.dat"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 humanNames.add(line);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         owners = new ArrayList<>(catsStarting);
@@ -175,7 +176,7 @@ public class Main {
         }
     }
 
-    private static void loadStations() {
+    static void loadStations() throws IOException {
         stations = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader("tfl_stations.csv"))) {
             String line;
@@ -184,8 +185,6 @@ public class Main {
                 int id = Integer.parseInt(split[0]);
                 stations.put(id, new Station(id, split[1]));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader("tfl_connections.csv"))) {
@@ -200,8 +199,6 @@ public class Main {
                 oneStation.addConnectedTo(otherStation);
                 otherStation.addConnectedTo(oneStation);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

@@ -1,8 +1,5 @@
 package uk.co.deftelf.cats;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,14 +9,11 @@ public abstract class SentientThing { // I had to look up whether cats were sent
 
     public final int id;
     public final String name;
-    private final Collection<Station> stationsVisited;
-    protected boolean isStuck;
     private Station station;
 
     protected SentientThing(int id, String name) {
         this.id = id;
         this.name = name;
-        stationsVisited = new HashSet<>();
     }
 
     public abstract void move();

@@ -1,7 +1,6 @@
 package uk.co.deftelf.cats;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -19,7 +18,7 @@ public class Main {
 
     static boolean verbose;
     static boolean veryVerbose;
-    static boolean shaveMode, mindTheGapMode, grudgematchMode;
+    static boolean shaveMode, mindTheGapMode;
 
     public static void main(String[] args) {
 
@@ -47,7 +46,7 @@ public class Main {
         for (int i=0; i < cats.size(); i++) {
             SentientThing cat = cats.get(i);
             SentientThing owner = owners.get(i);
-            if (cat.getStation() == owner.getStation()) {
+            if (cat.getStation().equals(owner.getStation())) {
                 cat.setStation(stationsArr[random.nextInt(stationsArr.length)]);
                 return true;
             }
@@ -76,7 +75,7 @@ public class Main {
             for (int i=0; i < cats.size(); i++) {
                 SentientThing cat = cats.get(i);
                 SentientThing owner = owners.get(i);
-                if (cat.getStation() == owner.getStation()) {
+                if (cat.getStation().equals(owner.getStation())) {
                     matches.add(i);
                 }
             }
@@ -206,15 +205,13 @@ public class Main {
 
         String lastArg = null;
         for (String arg : args) {
-            if (arg.startsWith("--hel")) {
+            if (arg.startsWith("--h")) {
                 outputHelp();
                 return false;
             } else if (arg.startsWith("--s")) {
                 shaveMode = true;
             } else if (arg.startsWith("--m")) {
                 mindTheGapMode = true;
-            } else if (arg.startsWith("--hea")) {
-                grudgematchMode = true;
             } else if (arg.equals("-v")) {
                 verbose = true;
             } else if (arg.equals("-vv")) {
@@ -241,7 +238,6 @@ public class Main {
         System.out.println("Options:");
         System.out.println(" --shave:\tShave mode. If someone finds someone else's cat, they shave it out of spite.");
         System.out.println(" --mind_the_gap:\tCats have a 1/50 chance of falling into the gap, and getting stuck where they are.");
-        System.out.println(" --headshot:\tCats that meet, fight to the death.");
         System.out.println(" -v:\tVerbose");
         System.out.println(" -vv:\t*VERBOSE*");
         System.out.println(" --help: this text");

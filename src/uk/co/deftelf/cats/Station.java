@@ -10,13 +10,11 @@ public class Station {
     private final int id;
     private final String name;
     private final Set<Station> connectedTo;
-    private boolean isOpen;
 
     public Station(int id, String name) {
         this.id = id;
         this.name = name;
         connectedTo = new HashSet<>();
-        isOpen = true;
     }
 
     public String getName() {
@@ -34,15 +32,16 @@ public class Station {
     }
 
     public void close() {
-        isOpen = false;
+        // Not clear in the spec, but I take closing a station to stop to allow trains to pass by the station but just not stop
+        // Every station that was connected to this station are now connected directly to each other
         for (Station connection : connectedTo) {
             connection.getConnectedTo().remove(this);
+            for (Station connection2 : connectedTo) {
+                if (!connection.equals(connection2)) {
+                    connection.addConnectedTo(connection2);
+                }
+            }
         }
-        getConnectedTo().clear();
-    }
-
-    public boolean isOpen() {
-        return isOpen;
     }
 
     @Override

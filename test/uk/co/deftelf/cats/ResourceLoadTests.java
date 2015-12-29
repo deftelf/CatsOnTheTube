@@ -34,7 +34,7 @@ public class ResourceLoadTests {
 
     @Test
     public void testMovement() throws Exception {
-        for (int i=0; i < 20; i++) { // Random elements so we should run a few times to improve chance of hitting all states
+        for (int i = 0; i < 20; i++) { // Random elements so we should run a few times to improve chance of hitting all states
             Owner bob = new Owner(9999, "Bob");
             Station bow = Main.stations.get(33);
             Station mileEnd = Main.stations.get(164);
@@ -61,4 +61,26 @@ public class ResourceLoadTests {
             }
         }
     }
+
+    @Test
+    public void testClose() throws Exception {
+        Station mileEnd = Main.stations.get(164);
+        Station bow = Main.stations.get(33);
+        Station bg = Main.stations.get(24);
+        Station stepney = Main.stations.get(244);
+        Station stratford = Main.stations.get(247);
+        Station bromley = Main.stations.get(36);
+
+        Assert.assertEquals(mileEnd.getConnectedTo().size(), 4);
+        mileEnd.close();
+        Assert.assertEquals(mileEnd.getConnectedTo().size(), 4);
+        Assert.assertFalse(bow.getConnectedTo().contains(mileEnd));
+        Assert.assertFalse(bow.getConnectedTo().contains(bow));
+        Assert.assertTrue(bow.getConnectedTo().contains(bg));
+        Assert.assertTrue(bow.getConnectedTo().contains(stepney));
+        Assert.assertTrue(bow.getConnectedTo().contains(stratford));
+        Assert.assertTrue(bow.getConnectedTo().contains(bromley));
+        Assert.assertEquals(bow.getConnectedTo().size(), 4);
+    }
+
 }
